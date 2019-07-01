@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.user.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.user.entity.User" >
+    <constructor >
+      <idArg column="user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_role" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_question" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_answer" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="base_column_list">
+    user_id,user_name,user_email,user_phone,user_password,user_role,user_question,user_answer,ceate_time,update_time
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.user.entity.User" >
+    insert into blog_user (user_id, user_name, user_email, 
+      user_phone, user_password, user_role, 
+      user_question, user_answer, create_time, 
+      update_time)
+    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, #{userRole,jdbcType=VARCHAR}, 
+      #{userQuestion,jdbcType=VARCHAR}, #{userAnswer,jdbcType=VARCHAR}, now(), now())
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.user.entity.User" >
+    update blog_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_role = #{userRole,jdbcType=VARCHAR},
+      user_question = #{userQuestion,jdbcType=VARCHAR},
+      user_answer = #{userAnswer,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'false' as QUERYID,user_id, user_name, user_email, user_phone, user_password, 
+    user_role, user_question, user_answer, create_time, update_time
+    from blog_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select user_id, user_name, user_email, user_phone, user_password, user_role, user_question, 
+    user_answer, create_time, update_time
+    from blog_user
+  </select>
+
+
+
+
+
+
+
+  <!--注册时检查用户名或邮箱有没有人已经注册了  如果有返回1，没有返回0-->
+  <select id="selectByUserNameAndEmail" resultType="int" parameterType="map">
+    select count(1) from blog_user
+    <where>
+      <if test="userName!=null">and user_name=#{userName}</if>
+      <if test="userEmail!=null">and user_email=#{userEmail}</if>
+    </where>
+  </select>
+
+  <select id="selectByUserNameOrEmail" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="base_column_list"/>
+    from blog_user
+    <where>
+      <if test="userName!=null">user_name=#{userName}</if>
+      <if test="userPassword!=null">user_password=#{userPassword}</if>
+    </where>
+  </select>
+
+  <select id="selectPasswordByUserNameForSecurity" resultType="string" parameterType="string">
+    select
+    user_password
+    from blog_user
+    where user_name=#{userName}
+  </select>
+
+  <select id="selectRoleByUserNameForSecurity" resultType="string" parameterType="string">
+    select
+    user_role
+    from blog_user
+    where user_name=#{userName}
+  </select>
+</mapper>

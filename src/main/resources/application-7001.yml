@@ -1,0 +1,48 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: blog-user
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 1 from dual
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filter:
+        stat:
+          log-slow-sql: true
+          db-type: mysql
+          slow-sql-millis: 2000
+        log4j:
+          enabled: true
+      stat-view-servlet:
+        login-username: qingchun
+        login-password: 729512117
+        enabled: true
+        url-pattern: /druid/*
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: .js,.gif,.jpg,.css,/druid/*
+      max-pool-prepared-statement-per-connection-size: 20
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      url: jdbc:mysql://localhost:3306/blog?Encoding=utf-8&useSSL=false&ServerTimezone=GMT%2B8
+      username: root
+      password: 729512117
+      driver-class-name: com.mysql.jdbc.Driver
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: qingchun
+    password: 729512117
+mybatis:
+  mapper-locations: classpath:mappers/*xml
+  type-aliases-package: com.user.entity

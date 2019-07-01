@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.user.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.user.entity.Article" >
+    <constructor >
+      <idArg column="article_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="article_user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="article_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="article_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.user.entity.Article" >
+    insert into blog_article (article_id, article_user_id, article_title, 
+      article_content, create_time, update_time
+      )
+    values (#{articleId,jdbcType=VARCHAR}, #{articleUserId,jdbcType=VARCHAR}, #{articleTitle,jdbcType=VARCHAR}, 
+      #{articleContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.user.entity.Article" >
+    update blog_article
+    set article_user_id = #{articleUserId,jdbcType=VARCHAR},
+      article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_content = #{articleContent,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'false' as QUERYID,article_id, article_user_id, article_title, article_content, 
+    create_time, update_time
+    from blog_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select article_id, article_user_id, article_title, article_content, create_time, 
+    update_time
+    from blog_article
+  </select>
+</mapper>

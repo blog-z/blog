@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.user.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.user.entity.Comment" >
+    <constructor >
+      <idArg column="comment_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="comment_user_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="comment_article_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="comment_farther" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="comment_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.user.entity.Comment" >
+    insert into blog_comment (comment_id, comment_user_id, comment_article_id, 
+      comment_farther, comment_content)
+    values (#{commentId,jdbcType=VARCHAR}, #{commentUserId,jdbcType=VARCHAR}, #{commentArticleId,jdbcType=VARCHAR}, 
+      #{commentFarther,jdbcType=VARCHAR}, #{commentContent,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.user.entity.Comment" >
+    update blog_comment
+    set comment_user_id = #{commentUserId,jdbcType=VARCHAR},
+      comment_article_id = #{commentArticleId,jdbcType=VARCHAR},
+      comment_farther = #{commentFarther,jdbcType=VARCHAR},
+      comment_content = #{commentContent,jdbcType=VARCHAR}
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'false' as QUERYID,comment_id, comment_user_id, comment_article_id, comment_farther, 
+    comment_content
+    from blog_comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select comment_id, comment_user_id, comment_article_id, comment_farther, comment_content
+    from blog_comment
+  </select>
+</mapper>
