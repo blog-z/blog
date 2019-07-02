@@ -2,6 +2,7 @@ package com.user.service.impl;
 
 import com.user.commons.Const;
 import com.user.commons.ServerResponse;
+import com.user.elasticsearch.elasticsearchService.UserElasticsearchService;
 import com.user.entity.User;
 import com.user.mapper.UserMapper;
 import com.user.service.UserService;
@@ -27,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserElasticsearchService userElasticsearchService;
 
     //登录
     public ServerResponse login(String userName, String userEmail, String userPassword){
@@ -55,6 +59,7 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("注册失败");
         }
         setUserRedis(user);
+        userElasticsearchService.elasticsearchSave(user);
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 

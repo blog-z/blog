@@ -1,11 +1,15 @@
 package com.user.entity;
 
+import lombok.Builder;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.Date;
 
+@Builder
 @Document(indexName = "blog",type = "user")
 public class User {
+    @Id
     private String userId;
 
     private String userName;
