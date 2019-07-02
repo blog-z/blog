@@ -17,29 +17,28 @@ import java.net.UnknownHostException;
 @Configuration
 public class ElasticsearchConfig {
 
-    @Value(value = "spring.data.elasticsearch.cluster-name")
-    private String esClusterName;
-
-    @Value(value = "spring.data.elasticsearch.cluster-nodes")
-    private String esClusterNodes;
-
-
     private static final Logger logger= LoggerFactory.getLogger(ElasticsearchConfig.class);
 
     @Bean
     public TransportClient MyTransportClient(){
+        logger.info("==========初始化elasticsearch！========");
         TransportClient transportClient=null;
-
         try {
-            TransportAddress transportAddress=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9301);
+            TransportAddress transportAddress1=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9301);
+            TransportAddress transportAddress2=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9302);
+            TransportAddress transportAddress3=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9303);
 
 
             Settings elasticsearchSettings=Settings.builder()
-                    .put("cluster.name",esClusterName)
+                    .put("cluster.name","qingchun-es-cluster")
                     .build();
 
             transportClient=new PreBuiltTransportClient(elasticsearchSettings);
-            transportClient.addTransportAddress(transportAddress);
+            transportClient.addTransportAddress(transportAddress1);
+            transportClient.addTransportAddress(transportAddress2);
+            transportClient.addTransportAddress(transportAddress3);
+            logger.info("初始化elasticsearch！");
+
         } catch (UnknownHostException e) {
             logger.info("初始化elasticsearch失败！");
         }
