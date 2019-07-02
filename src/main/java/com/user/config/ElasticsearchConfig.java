@@ -19,7 +19,7 @@ public class ElasticsearchConfig {
 
     private static final Logger logger= LoggerFactory.getLogger(ElasticsearchConfig.class);
 
-    @Bean
+    @Bean(name = "myTransportClient")
     public TransportClient MyTransportClient(){
         logger.info("==========初始化elasticsearch！========");
         TransportClient transportClient=null;
@@ -31,6 +31,7 @@ public class ElasticsearchConfig {
 
             Settings elasticsearchSettings=Settings.builder()
                     .put("cluster.name","qingchun-es-cluster")
+//                    .put("client.transport.sniff","true")
                     .build();
 
             transportClient=new PreBuiltTransportClient(elasticsearchSettings);
