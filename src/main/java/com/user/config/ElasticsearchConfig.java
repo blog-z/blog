@@ -6,7 +6,6 @@ import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,9 @@ public class ElasticsearchConfig {
 
     private static RestClient lowRestClient=null;
 
-    private static RestHighLevelClient restHighLevelClient=null;
+    static {
+        init();
+    }
 
     private static void init(){
         RestClientBuilder restClientBuilder=RestClient.builder(new HttpHost("localhost",9201,"http"));
@@ -48,7 +49,6 @@ public class ElasticsearchConfig {
         //构建low level client
         lowRestClient=restClientBuilder.build();
         //构建high level client
-//        restHighLevelClient=new RestHighLevelClient(lowRestClient);
         logger.info("-------------------------elasticsearch 的 REST Client 初始化完成---------------");
     }
 }
