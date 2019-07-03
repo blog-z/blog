@@ -49,4 +49,8 @@ public class ElasticsearchConfig {
         //构建high level client
         logger.info("-------------------------elasticsearch 的 REST Client 初始化完成---------------");
     }
+
+    public static RestClient getLowRestClient(){
+        return lowRestClient;
+    }
 }
