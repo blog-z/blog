@@ -1,48 +1,54 @@
 package com.user.config;
 
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.impl.nio.reactor.IOReactorConfig;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 @Configuration
 public class ElasticsearchConfig {
 
     private static final Logger logger= LoggerFactory.getLogger(ElasticsearchConfig.class);
 
-    @Bean(name = "myTransportClient")
-    public TransportClient MyTransportClient(){
-        logger.info("==========初始化elasticsearch！========");
-        TransportClient transportClient=null;
-        try {
-            TransportAddress transportAddress1=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9301);
-            TransportAddress transportAddress2=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9302);
-            TransportAddress transportAddress3=new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"),9303);
+    private static RestClient lowRestClient=null;
 
+    private static RestHighLevelClient restHighLevelClient=null;
 
-            Settings elasticsearchSettings=Settings.builder()
-                    .put("cluster.name","qingchun-es-cluster")
-//                    .put("client.transport.sniff","true")
-                    .build();
+    private static void init(){
+        RestClientBuilder restClientBuilder=RestClient.builder(new HttpHost("localhost",9201,"http"));
+        restClientBuilder.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
+            @Override
+            public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder builder) {
+                builder.setConnectTimeout(10000);
+                builder.setSocketTimeout(20000);
+                builder.setConnectionRequestTimeout(30000);
+                return builder;
+            }
+        });
 
-            transportClient=new PreBuiltTransportClient(elasticsearchSettings);
-            transportClient.addTransportAddress(transportAddress1);
-            transportClient.addTransportAddress(transportAddress2);
-            transportClient.addTransportAddress(transportAddress3);
-            logger.info("初始化elasticsearch！");
+        restClientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+            @Override
+            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
+                return httpAsyncClientBuilder.setDefaultIOReactorConfig(IOReactorConfig.custom()
+                        .setIoThreadCount(100)  //线程数配置
+                        .setConnectTimeout(10000)
+                        .setSoTimeout(10000)
+                        .build());
+            }
+        });
 
-        } catch (UnknownHostException e) {
-            logger.info("初始化elasticsearch失败！");
-        }
-        return transportClient;
+        //设置超时
+        restClientBuilder.setMaxRetryTimeoutMillis(10000);
+        //构建low level client
+        lowRestClient=restClientBuilder.build();
+        //构建high level client
+//        restHighLevelClient=new RestHighLevelClient(lowRestClient);
+        logger.info("-------------------------elasticsearch 的 REST Client 初始化完成---------------");
     }
 }
