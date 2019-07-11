@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/**").hasAnyRole("0","1")
                 .and()
-                .formLogin().loginPage("/user/login").loginProcessingUrl("/user/login").usernameParameter("userName").passwordParameter("userPassword").successForwardUrl("/user/getUserMessage").permitAll()
+                .formLogin().loginPage("/user/login").loginProcessingUrl("/user/login").usernameParameter("userName").passwordParameter("userPassword").permitAll()
                 .and()
                 .rememberMe()
                 .and()
@@ -46,6 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //基于token,所以不需要session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
+        http.exceptionHandling().accessDeniedHandler(getAccessDeniedHandler());
+    }
+
+    //基于restful形式的spring security
+    @Bean
+    public AccessDeniedHandler getAccessDeniedHandler(){
+        return new MyAccessDeniedHandler();
     }
 
 

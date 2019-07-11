@@ -62,12 +62,24 @@
 
 
 
-  <!--注册时检查用户名或邮箱有没有人已经注册了  如果有返回1，没有返回0-->
+  <!--注册时检查  用户名或  邮箱或   电话号码  有没有人已经注册了  如果有返回1，没有返回0-->
   <select id="selectByUserNameAndEmail" resultType="int" parameterType="map">
     select count(1) from blog_user
     <where>
       <if test="userName!=null">and user_name=#{userName}</if>
       <if test="userEmail!=null">and user_email=#{userEmail}</if>
+    </where>
+  </select>
+
+  <!--注册时检查     用户名/邮箱/电话   有没有被使用    如果有就返回  >0  没有返回0   -->
+  <select id="selectByUserNameOrEmailOrPhone" resultType="int" parameterType="map">
+    select
+    count(*)
+    from blog_user
+    <where>
+      <if test="userName!=null">OR user_name=#{userName}</if>
+      <if test="userEmail!=null">OR user_email=#{userEmail}</if>
+      <if test="Phone!=null">OR user_phone=#{Phone}</if>
     </where>
   </select>
 

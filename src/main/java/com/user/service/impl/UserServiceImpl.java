@@ -23,6 +23,7 @@ import java.util.UUID;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
+
     private static final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
@@ -46,11 +47,23 @@ public class UserServiceImpl implements UserService {
 
     //注册
     public ServerResponse<String> register(User user){
-        int count=userMapper.selectByUserNameAndEmail(user.getUserName(),user.getUserEmail());
-        if (count!=0){
-            logger.info("===============负载到这了tomcat===============");
-            return ServerResponse.createByErrorMessage("用户名或email已使用");
+        String response=null;
+        int countUserName=userMapper.selectByUserNameOrEmailOrPhone(user.getUserName(),null,null);
+        int countUserEmail=userMapper.selectByUserNameOrEmailOrPhone(null,user.getUserEmail(),null);
+        int countPhone=userMapper.selectByUserNameOrEmailOrPhone(null,null,user.getUserPhone());
+        if (countUserName+countUserEmail+countPhone!=0){
+            if (countUserName!=0){
+                response+="用户名";
+                if (countUserEmail!=0) {
+                    response+="邮箱";
+                    if (countPhone != 0) {
+                        response+="电话号码";
+                    }
+                }
+            }
+            return ServerResponse.createByErrorMessage(response+"已存在");
         }
+
         user.setUserId(JedisUtil.getUserId());
         user.setUserRole(Const.Role.ROLE_CONSUMER);
         user.setUserPassword(bCryptPasswordEncoder.encode(user.getUserPassword()));

@@ -18,6 +18,9 @@ public interface UserMapper {
 
     int selectByUserNameAndEmail(@Param(value = "userName") String userName, @Param(value = "userEmail") String userEmail);
 
+    //注册时检查     用户名/邮箱/电话   有没有被使用
+    int selectByUserNameOrEmailOrPhone(@Param(value = "userName") String userName,@Param(value = "userEmail") String userEmail,@Param(value = "Phone") String Phone);
+
     User selectByUserNameOrEmail(@Param(value = "userName") String userName, @Param(value = "userPassword") String userPassword);
 
     String selectPasswordByUserNameForSecurity(String userName);

@@ -31,6 +31,7 @@ public class UserController {
     //注册
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public ServerResponse<String> register(User user){
+        //key value 加入redis并设置时间keyTime
         JedisUtil.setKeyTime(user.getUserName()+1,"session time",2*60);
         JedisUtil.setKeyTime(user.getUserEmail()+1,"session time",2*60);
         return userService.register(user);
