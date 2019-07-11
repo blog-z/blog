@@ -36,7 +36,7 @@ public class DateTimeUtil {
 
     public static void main(String[] args) {
         Date date=strToDate("2019-10-10","yyyy-MM-dd");
-        String string=dateToString(date,"yyyy-MM-dd");
+        String string=dateToString(new Date(),"yyyy-MM-dd");
         System.out.println(date);
         System.out.println(string);
     }

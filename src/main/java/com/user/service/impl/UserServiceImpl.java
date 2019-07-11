@@ -5,6 +5,7 @@ import com.user.commons.ServerResponse;
 import com.user.entity.User;
 import com.user.mapper.UserMapper;
 import com.user.service.UserService;
+import com.user.utils.DateTimeUtil;
 import com.user.utils.ElasticsearchUtil;
 import com.user.utils.JedisUtil;
 import com.user.utils.JsonUtil;
@@ -57,8 +58,6 @@ public class UserServiceImpl implements UserService {
         if (rowCount==0){
             return ServerResponse.createByErrorMessage("注册失败");
         }
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
         setUserRedis(user);
         ElasticsearchUtil.insertUser("blog","user",user.getUserId(),user);
         return ServerResponse.createBySuccessMessage("注册成功");

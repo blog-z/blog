@@ -1,5 +1,6 @@
 package com.user.utils;
 
+import com.user.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JsonUtil {
     private static Logger logger= LoggerFactory.getLogger(JsonUtil.class);
@@ -73,4 +75,6 @@ public class JsonUtil {
             return null;
         }
     }
+
+
 }
