@@ -7,6 +7,7 @@ import com.user.utils.JedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,7 @@ public class UserController {
 
     //登录
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public ServerResponse login(String userName, String userEmail, String userPassword){
+    public ServerResponse login(@RequestParam(value = "username") String userName,@RequestParam(required = false) String userEmail,@RequestParam(value = "password") String userPassword){
         ServerResponse response=userService.login(userName,userEmail,userPassword);
         if (response.isSuccess()){
             JedisUtil.setLoginTime(userName,userEmail);

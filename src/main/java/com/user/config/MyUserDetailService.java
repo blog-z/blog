@@ -24,7 +24,7 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        logger.info("------loadUserByUsername------"+userName+"---用户登录了---------------");
+        logger.info("------loadUserByUsername------="+userName+"=---用户登录了---------------");
         UserDetails userDetails=new User(
                 userName,
                 userMapper.selectPasswordByUserNameForSecurity(userName),
