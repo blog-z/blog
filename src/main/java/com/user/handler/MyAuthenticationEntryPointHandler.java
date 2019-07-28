@@ -1,5 +1,7 @@
 package com.user.handler;
 
+import com.user.commons.ServerResponse;
+import com.user.utils.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -16,5 +18,6 @@ public class MyAuthenticationEntryPointHandler implements AuthenticationEntryPoi
         StringBuffer msg = new StringBuffer("请求访问: ");
         msg.append(request.getRequestURI()).append(" 接口，因为认证失败，无法访问系统资源.");
         System.out.println(msg.toString());
+        ResponseUtil.out(response, ServerResponse.createByErrorMessage(msg.toString()));
     }
 }

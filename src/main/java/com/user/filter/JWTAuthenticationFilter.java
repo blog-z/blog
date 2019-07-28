@@ -81,11 +81,10 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                     return new UsernamePasswordAuthenticationToken(principal, userId, authorities);
                 }
             } catch (ExpiredJwtException e) {
-                System.out.println("toekn超过有效期，请重新登");
-                //throw new BaseException("401","toekn超过有效期，请重新登录");
-                ResponseUtil.out(response,ServerResponse.createByErrorMessage("token has expired"));
+                System.out.println("token 超过有效期，请重新登录");
+                ResponseUtil.out(response,ServerResponse.createByErrorMessage("token 超过有效期，请重新登录"));
             } catch (Exception e){
-                ResponseUtil.out(response,ServerResponse.createByErrorMessage("token invalid"));
+                ResponseUtil.out(response,ServerResponse.createByErrorMessage("token 是错误的"));
             }
         }
         return null;
