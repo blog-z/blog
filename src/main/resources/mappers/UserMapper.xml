@@ -16,7 +16,7 @@
     </constructor>
   </resultMap>
   <sql id="base_column_list">
-    user_id,user_name,user_email,user_phone,user_password,user_role,user_question,user_answer,ceate_time,update_time
+    user_id,user_name,user_email,user_phone,user_password,user_role,user_question,user_answer,create_time,update_time
   </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from blog_user
@@ -88,8 +88,8 @@
     <include refid="base_column_list"/>
     from blog_user
     <where>
-      <if test="userName!=null">user_name=#{userName}</if>
-      <if test="userPassword!=null">user_password=#{userPassword}</if>
+      <if test="userName!=null">and user_name=#{userName}</if>
+      <if test="userEmail!=null">and user_email=#{userEmail}</if>
     </where>
   </select>
 

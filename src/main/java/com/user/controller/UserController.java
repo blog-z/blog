@@ -47,29 +47,20 @@ public class UserController {
     //忘记密码，得到忘记密码问题
     @RequestMapping(value = "getQuestion",method = RequestMethod.POST)
     public ServerResponse getQuestion(String userName, String userEmail){
-        if (!JedisUtil.getLoginTime(userName,userEmail)){
-            return ServerResponse.createByErrorMessage("请登录！");
-        }
         return userService.getQuestion(userName,userEmail);
     }
 
     //输入忘记密码的问题答案   并给一个token 存入redis并有120秒时间限制
-    @RequestMapping(value = "set_answer",method = RequestMethod.POST)
+    @RequestMapping(value = "setAnswer",method = RequestMethod.POST)
     public ServerResponse setAnswer(String userName, String userEmail, String answer, HttpSession session){
-        if (!JedisUtil.getLoginTime(userName,userEmail)){
-            return ServerResponse.createByErrorMessage("请登录！");
-        }
         ServerResponse response=userService.setAnswer(userName,userEmail,answer);
         session.setAttribute("token",response.getMsg());
         return response;
     }
 
     //输入新密码
-    @RequestMapping(value = "set_password",method = RequestMethod.POST)
+    @RequestMapping(value = "setPassword",method = RequestMethod.POST)
     public ServerResponse setPassword(String userName, String userEmail, String password, String token){
-        if (!JedisUtil.getLoginTime(userName,userEmail)){
-            return ServerResponse.createByErrorMessage("请登录！");
-        }
         if (!token.equals(JedisUtil.getToken(userName,userEmail))){
             return ServerResponse.createByErrorMessage("请重新操作");
         }

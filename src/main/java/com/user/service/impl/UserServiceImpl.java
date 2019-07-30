@@ -71,14 +71,15 @@ public class UserServiceImpl implements UserService {
         if (rowCount==0){
             return ServerResponse.createByErrorMessage("注册失败");
         }
-        setUserRedis(user);
-        ElasticsearchUtil.insertUser("blog","user",user.getUserId(),user);
+        setUserRedis(userMapper.selectByUserNameOrEmail(user.getUserName(),user.getUserEmail()));
+        ElasticsearchUtil.insertUser("blog","user",user.getUserId(),userMapper.selectByUserNameOrEmail(user.getUserName(),user.getUserEmail()));
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
     //得到用户详细信息
     public ServerResponse getUserMessage(String userName, String userEmail){
         User user= JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,userEmail);
+        user.setUserPassword("空");
         return ServerResponse.createBySuccess("spring security",user);
     }
 

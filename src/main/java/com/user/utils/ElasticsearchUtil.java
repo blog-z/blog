@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -19,16 +20,16 @@ public class ElasticsearchUtil {
         //添加索引
         public static void insertUser(String IndexName, String TypeName, String Id, User user) {
                 String userJson="{" +
-                        "\"userId\":\"6\"," +
-                        "\"userName\":\"aaaa\"," +
-                        "\"userEmail\":\"2222@qq.com\"," +
-                        "\"userPhone\":\"8888\"," +
-                        "\"userPassword\":\"247234123948\"," +
-                        "\"userRole\":\"1\"," +
-                        "\"userQuestion\":\"asljfl\"," +
-                        "\"userAnswer\":\"klashfjks\"," +
-                        "\"createTime\":\"2019-07-04 08:33:27\"," +
-                        "\"updateTime\":\"2019-07-04 08:33:27\"" +
+                        "\"userId\":\""+user.getUserId()+"\"," +
+                        "\"userName\":\""+user.getUserName()+"\"," +
+                        "\"userEmail\":\""+user.getUserEmail()+"\"," +
+                        "\"userPhone\":\""+user.getUserPhone()+"\"," +
+                        "\"userPassword\":\""+user.getUserPassword()+"\"," +
+                        "\"userRole\":\""+user.getUserRole()+"\"," +
+                        "\"userQuestion\":\""+user.getUserQuestion()+"\"," +
+                        "\"userAnswer\":\""+user.getUserAnswer()+"\"," +
+                        "\"createTime\":\""+ new java.sql.Date(user.getCreateTime().getTime()).toString() +"\"," +
+                        "\"updateTime\":\""+new java.sql.Date(user.getUpdateTime().getTime()).toString()+"\""+
                         "}";
 
 
