@@ -38,7 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            "/ueditor/**",
+            "**/favicon.ico",
+            "/upload/**"
             // other public endpoints of your API may be appended to this array
     };
 
@@ -71,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //url认证顺序为:1.先配置放行需要认证的permitAll() 2.然后配置需要特定权限的hasRole() 3.最后配置anyRequest().authenticated()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 //其他请求都需要进行认证，认证通过才能访问
                 .anyRequest().authenticated()
                 .and()

@@ -39,7 +39,7 @@ public class JedisUtil {
         return StringUtils.isNotBlank(JedisUtil.getKey(userName+1));
     }
 
-    //set token
+    //set token 这个token是修改密码和忘记密码时用的
     public static void setToken(String userName,String userEmail,String token){
         if (userName==null){
             JedisUtil.setKeyTime(userEmail+"token",token,60);
@@ -47,7 +47,7 @@ public class JedisUtil {
         JedisUtil.setKeyTime(userName+"token",token,60);
     }
 
-    //get token
+    //get token 这个token是修改密码和忘记密码时用的
     public static String getToken(String userName,String userEmail){
         JedisCluster jedisCluster= RedisPoolConfig.getJedisCluster();
         if (userName==null){

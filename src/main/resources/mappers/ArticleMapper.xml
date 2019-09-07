@@ -15,6 +15,8 @@
     delete from blog_article
     where article_id = #{articleId,jdbcType=VARCHAR}
   </delete>
+
+  <!--发表文章是前端传过来一个富文本（html页面）-->
   <insert id="insert" parameterType="com.user.entity.Article" >
     insert into blog_article (article_id, article_user_id, article_title, 
       article_content, create_time, update_time

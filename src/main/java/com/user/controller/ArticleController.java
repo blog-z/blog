@@ -1,0 +1,35 @@
+package com.user.controller;
+
+import com.user.commons.ImgResultDto;
+import com.user.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/upload/")
+public class ArticleController {
+
+    @Autowired
+    private ArticleService articleService;
+
+    @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = RequestMethod.OPTIONS, maxAge = 3600)
+    @RequestMapping(value = "uploadImage")
+    public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list, HttpServletRequest request, HttpServletResponse response){
+        //这里是我在web中定义的两个初始化属性，保存目录的绝对路径和相对路径，你们可以自定义
+        String imgUploadAbsolutePath = request.getServletContext().getInitParameter("imgUploadAbsolutePath");
+        String imgUploadRelativePath = request.getServletContext().getInitParameter("imgUploadRelativePath");
+
+        //允许任何请求访问
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8082");
+//        response.setHeader("Access-Control-Allow-Headers", "Content-Length,X-Requested-With,content-type");
+        response.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+
+        //服务曾处理数据，返回Dto
+        return articleService.uploadImage(list,imgUploadAbsolutePath,imgUploadRelativePath,1);
+    }
+}

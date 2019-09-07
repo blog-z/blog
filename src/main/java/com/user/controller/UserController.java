@@ -23,18 +23,12 @@ public class UserController {
     @RequestMapping(value = "login",method = RequestMethod.POST)
     public ServerResponse login(@RequestParam(value = "username") String userName,@RequestParam(required = false) String userEmail,@RequestParam(value = "password") String userPassword){
         ServerResponse response=userService.login(userName,userEmail,userPassword);
-        if (response.isSuccess()){
-            JedisUtil.setLoginTime(userName,userEmail);
-        }
         return response;
     }
 
     //注册
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public ServerResponse<String> register(User user){
-        //key value 加入redis并设置时间keyTime
-        JedisUtil.setKeyTime(user.getUserName()+1,"session time",2*60);
-        JedisUtil.setKeyTime(user.getUserEmail()+1,"session time",2*60);
         return userService.register(user);
     }
 
