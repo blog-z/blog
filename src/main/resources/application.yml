@@ -71,3 +71,11 @@ jwt:
   tokenPrefix: Bearer
   secret: sexygirls
   expiration: 60
+dubbo:
+  application:
+    name: blog-user
+  registry:
+    address: zookeeper://127.0.0.1:21812
+    protocol: zookeeper
+  scan:
+    base-packages: com.user.controller

@@ -1,7 +1,9 @@
 package com.user.controller;
 
+import com.dubbo.ElasticsearchService;
 import com.user.commons.ImgResultDto;
 import com.user.service.ArticleService;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,9 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Reference(version = "1.0.0")
+    private ElasticsearchService elasticsearchService;
+
     @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = RequestMethod.OPTIONS, maxAge = 3600)
     @RequestMapping(value = "uploadImage")
     public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list, HttpServletRequest request, HttpServletResponse response){
@@ -31,5 +36,11 @@ public class ArticleController {
 
         //服务曾处理数据，返回Dto
         return articleService.uploadImage(list,imgUploadAbsolutePath,imgUploadRelativePath,1);
+    }
+
+
+    @RequestMapping(value = "dubbo")
+    public String dubboTest(String dubboString){
+        return elasticsearchService.sayHello(dubboString);
     }
 }
