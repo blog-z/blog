@@ -1,6 +1,6 @@
 package com.user.service;
 
-import com.user.commons.ImgResultDto;
+import com.dubbo.commons.ImgResultDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

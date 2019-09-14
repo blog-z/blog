@@ -1,7 +1,6 @@
 package com.user.service;
 
-import com.user.commons.ImgResultDto;
-import org.springframework.stereotype.Service;
+import com.dubbo.commons.ImgResultDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

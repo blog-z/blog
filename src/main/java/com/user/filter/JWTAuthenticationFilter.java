@@ -1,6 +1,6 @@
 package com.user.filter;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.utils.JsonUtil;
 import com.user.utils.JwtTokenUtil;
 import com.user.utils.ResponseUtil;
@@ -82,7 +82,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 }
             } catch (ExpiredJwtException e) {
                 System.out.println("token 超过有效期，请重新登录");
-                ResponseUtil.out(response,ServerResponse.createByErrorMessage("token 超过有效期，请重新登录"));
+                ResponseUtil.out(response, ServerResponse.createByErrorMessage("token 超过有效期，请重新登录"));
             } catch (Exception e){
                 ResponseUtil.out(response,ServerResponse.createByErrorMessage("token 是错误的"));
             }

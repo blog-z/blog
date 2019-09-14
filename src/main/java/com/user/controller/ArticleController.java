@@ -1,8 +1,11 @@
 package com.user.controller;
 
 import com.dubbo.ElasticsearchService;
-import com.user.commons.ImgResultDto;
+import com.dubbo.commons.ImgResultDto;
+import com.dubbo.commons.ServerResponse;
+import com.dubbo.entity.Article;
 import com.user.service.ArticleService;
+import com.user.utils.ElasticsearchUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +46,28 @@ public class ArticleController {
     public String dubboTest(String dubboString){
         return elasticsearchService.sayHello(dubboString);
     }
+
+    //发表文章
+    @RequestMapping(value = "uploadArticle",method = RequestMethod.POST)
+    public ServerResponse uploadArticle(Article article){
+        return elasticsearchService.addArticle(article);
+    }
+
+    //删除文章
+    @RequestMapping(value = "deleteArticle",method = RequestMethod.POST)
+    public ServerResponse deleteArticle(String articleId){
+        return elasticsearchService.deleteArticle(articleId);
+    }
+
+    //更新文章
+    public ServerResponse updateArticle(Article article){
+        return elasticsearchService.updateArticle(article);
+    }
+
+    /**
+     * 查询文章
+     * 搜索服务
+     * 前端传过来    搜索人id,搜索关键字
+     */
+
 }

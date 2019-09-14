@@ -1,6 +1,6 @@
 package com.user.utils;
 
-import com.user.commons.RabbitmqConfig;
+import com.dubbo.commons.RabbitmqConfig;
 
 public class RabbitmqUtil {
 

@@ -1,8 +1,7 @@
 package com.user.config;
 
 import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+
 import org.apache.http.impl.nio.reactor.IOReactorConfig;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -21,26 +20,18 @@ public class ElasticsearchConfig {
 
     private static void init(){
         RestClientBuilder restClientBuilder=RestClient.builder(new HttpHost("localhost",9201,"http"));
-        restClientBuilder.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
-            @Override
-            public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder builder) {
-                builder.setConnectTimeout(10000);
-                builder.setSocketTimeout(20000);
-                builder.setConnectionRequestTimeout(30000);
-                return builder;
-            }
+        restClientBuilder.setRequestConfigCallback(builder -> {
+            builder.setConnectTimeout(10000);
+            builder.setSocketTimeout(20000);
+            builder.setConnectionRequestTimeout(30000);
+            return builder;
         });
 
-        restClientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-            @Override
-            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
-                return httpAsyncClientBuilder.setDefaultIOReactorConfig(IOReactorConfig.custom()
-                        .setIoThreadCount(100)  //线程数配置
-                        .setConnectTimeout(10000)
-                        .setSoTimeout(10000)
-                        .build());
-            }
-        });
+        restClientBuilder.setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultIOReactorConfig(IOReactorConfig.custom()
+                .setIoThreadCount(100)  //线程数配置
+                .setConnectTimeout(10000)
+                .setSoTimeout(10000)
+                .build()));
 
         //设置超时
         restClientBuilder.setMaxRetryTimeoutMillis(10000);

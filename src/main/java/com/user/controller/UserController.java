@@ -1,6 +1,6 @@
 package com.user.controller;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.entity.User;
 import com.user.service.UserService;
 import com.user.utils.JedisUtil;
@@ -21,7 +21,7 @@ public class UserController {
 
     //登录
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public ServerResponse login(@RequestParam(value = "username") String userName,@RequestParam(required = false) String userEmail,@RequestParam(value = "password") String userPassword){
+    public ServerResponse login(@RequestParam(value = "username") String userName, @RequestParam(required = false) String userEmail, @RequestParam(value = "password") String userPassword){
         ServerResponse response=userService.login(userName,userEmail,userPassword);
         return response;
     }

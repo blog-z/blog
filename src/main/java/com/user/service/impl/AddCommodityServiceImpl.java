@@ -1,6 +1,6 @@
 package com.user.service.impl;
 
-import com.user.commons.ImgResultDto;
+import com.dubbo.commons.ImgResultDto;
 import com.user.service.AddCommodityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

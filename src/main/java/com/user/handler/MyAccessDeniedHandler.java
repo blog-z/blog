@@ -1,6 +1,6 @@
 package com.user.handler;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.utils.ResponseUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -20,6 +20,6 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
         StringBuffer msg = new StringBuffer("请求: ");
         msg.append(request.getRequestURI()).append(" 权限不足，无法访问该资源.");
         System.out.println(msg.toString());
-        ResponseUtil.out(response,ServerResponse.createByErrorCodeMessage(402," 权限不足，无法访问该资源."));
+        ResponseUtil.out(response, ServerResponse.createByErrorCodeMessage(402," 权限不足，无法访问该资源."));
     }
 }

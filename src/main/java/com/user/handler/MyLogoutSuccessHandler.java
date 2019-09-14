@@ -1,6 +1,6 @@
 package com.user.handler;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.utils.ResponseUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +23,6 @@ public class MyLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         request.getSession().removeAttribute("SPRING_SECURITY_CONTEXT");
         //记录退出日志
         System.out.println("退出登录成功！");
-        ResponseUtil.out(response,ServerResponse.createBySuccessMessage("退出登录成功"));
+        ResponseUtil.out(response, ServerResponse.createBySuccessMessage("退出登录成功"));
     }
 }

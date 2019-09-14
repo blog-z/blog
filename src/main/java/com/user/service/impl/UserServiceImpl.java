@@ -1,7 +1,7 @@
 package com.user.service.impl;
 
-import com.user.commons.Const;
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.Const;
+import com.dubbo.commons.ServerResponse;
 import com.user.entity.User;
 import com.user.mapper.UserMapper;
 import com.user.service.UserService;

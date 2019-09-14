@@ -1,6 +1,6 @@
 package com.user.utils;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class ResponseUtil {
 
     private static PrintWriter printWriter;
 
-    public static void out(ServletResponse response,ServerResponse serverResponse){
+    public static void out(ServletResponse response, ServerResponse serverResponse){
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

@@ -1,6 +1,6 @@
 package com.user.handler;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.utils.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

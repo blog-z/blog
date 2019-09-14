@@ -1,6 +1,6 @@
 package com.user.utils;
 
-import com.user.commons.RedisPoolConfig;
+import com.dubbo.commons.RedisPoolConfig;
 import com.user.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.JedisCluster;

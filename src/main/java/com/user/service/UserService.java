@@ -1,6 +1,6 @@
 package com.user.service;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.entity.User;
 
 public interface UserService {

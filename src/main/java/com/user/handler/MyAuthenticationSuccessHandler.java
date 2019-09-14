@@ -1,6 +1,6 @@
 package com.user.handler;
 
-import com.user.commons.ServerResponse;
+import com.dubbo.commons.ServerResponse;
 import com.user.config.SecurityUserDetails;
 import com.user.utils.JwtTokenUtil;
 import com.user.utils.ResponseUtil;
@@ -23,6 +23,6 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
         User user=(User) authentication.getPrincipal();
         SecurityUserDetails securityUserDetails=new SecurityUserDetails(user.getUsername(),user.getAuthorities());
         String token=JwtTokenUtil.getToken(securityUserDetails);
-        ResponseUtil.out(response,ServerResponse.createBySuccessMessage("登录成功!   accessToken=="+token));
+        ResponseUtil.out(response, ServerResponse.createBySuccessMessage("登录成功!   accessToken=="+token));
     }
 }
