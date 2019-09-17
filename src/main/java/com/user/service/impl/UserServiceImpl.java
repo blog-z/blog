@@ -5,8 +5,6 @@ import com.dubbo.commons.ServerResponse;
 import com.user.entity.User;
 import com.user.mapper.UserMapper;
 import com.user.service.UserService;
-import com.user.utils.DateTimeUtil;
-import com.user.utils.ElasticsearchUtil;
 import com.user.utils.JedisUtil;
 import com.user.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.UUID;
 
 
@@ -73,8 +70,6 @@ public class UserServiceImpl implements UserService {
         }
         //注册成功后将用户信息存入redis中
         setUserRedis(userMapper.selectByUserNameOrEmail(user.getUserName(),user.getUserEmail()));
-        //注册成份后将用户信息存入elasticsearch中，作为搜索
-        ElasticsearchUtil.insertUser("blog","user",user.getUserId(),userMapper.selectByUserNameOrEmail(user.getUserName(),user.getUserEmail()));
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 

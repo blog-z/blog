@@ -5,7 +5,6 @@ import com.dubbo.commons.ImgResultDto;
 import com.dubbo.commons.ServerResponse;
 import com.dubbo.entity.Article;
 import com.user.service.ArticleService;
-import com.user.utils.ElasticsearchUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +38,6 @@ public class ArticleController {
 
         //服务曾处理数据，返回Dto
         return articleService.uploadImage(list,imgUploadAbsolutePath,imgUploadRelativePath,1);
-    }
-
-
-    @RequestMapping(value = "dubbo")
-    public String dubboTest(String dubboString){
-        return elasticsearchService.sayHello(dubboString);
     }
 
     //发表文章
