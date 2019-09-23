@@ -53,8 +53,15 @@ public class ArticleController {
     }
 
     //更新文章
+    @RequestMapping(value = "updateArticle",method = RequestMethod.POST)
     public ServerResponse updateArticle(Article article){
         return elasticsearchService.updateArticle(article);
+    }
+
+    //GET文章
+    @RequestMapping(value = "getArticle",method = RequestMethod.POST)
+    public ServerResponse getArticle(String articleId){
+        return elasticsearchService.selectArticle(articleId);
     }
 
     /**
@@ -62,5 +69,9 @@ public class ArticleController {
      * 搜索服务
      * 前端传过来    搜索人id,搜索关键字
      */
+    @RequestMapping(value = "searchArticle",method = RequestMethod.POST)
+    public ServerResponse searchArticle(String userInputText,int pageNum){
+        return elasticsearchService.searchArticle(userInputText,pageNum);
+    }
 
 }
