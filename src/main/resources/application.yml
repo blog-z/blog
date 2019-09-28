@@ -37,7 +37,7 @@ spring:
       url: jdbc:mysql://localhost:3306/blog?Encoding=utf-8&useSSL=false&ServerTimezone=GMT%2B8
       username: root
       password: 729512117
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
   rabbitmq:
     host: 172.18.0.7
     port: 5672

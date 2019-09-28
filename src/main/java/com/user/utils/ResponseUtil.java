@@ -16,7 +16,6 @@ public class ResponseUtil {
     private static PrintWriter printWriter;
 
     public static void out(ServletResponse response, ServerResponse serverResponse){
-
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         try {

@@ -7,7 +7,7 @@
     <!--导入属性配置-->
     <!--<properties resource="application.yml"/>-->
 
-    <classPathEntry location="/root/IdeaProjects/myblog/user/src/main/resources/lib/mysql-connector-java-5.1.46.jar"/>
+    <classPathEntry location="/root/IdeaProjects/blog-user/src/main/resources/lib/mysql-connector-java-5.1.46.jar"/>
 
 
     <context id="mysql" defaultModelType="hierarchical" targetRuntime="MyBatis3Simple" >
@@ -148,8 +148,6 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="blog_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>
-        <table tableName="blog_article" domainObjectName="Article" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>
         <table tableName="blog_comment" domainObjectName="Comment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>
 
     </context>

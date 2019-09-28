@@ -1,8 +1,23 @@
-package com.user.entity;
+package com.user.vo;
+
+import com.user.entity.Comment;
 
 import java.util.Date;
+import java.util.List;
 
-public class Comment {
+public class CommentVo {
+
+    public CommentVo(List<CommentVo> commentVoList, String commentId, String commentUserId, String commentArticleId, String commentFarther, String commentContent, Date createTime, Date updateTime) {
+        this.commentId = commentId;
+        this.commentUserId = commentUserId;
+        this.commentArticleId = commentArticleId;
+        this.commentFarther = commentFarther;
+        this.commentContent = commentContent;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.commentVoList = commentVoList;
+    }
+
     private String commentId;
 
     private String commentUserId;
@@ -17,18 +32,14 @@ public class Comment {
 
     private Date updateTime;
 
-    public Comment(String commentId, String commentUserId, String commentArticleId, String commentFarther, String commentContent, Date createTime, Date updateTime) {
-        this.commentId = commentId;
-        this.commentUserId = commentUserId;
-        this.commentArticleId = commentArticleId;
-        this.commentFarther = commentFarther;
-        this.commentContent = commentContent;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
+    private List<CommentVo> commentVoList;
+
+    public List<CommentVo> getCommentVoList() {
+        return commentVoList;
     }
 
-    public Comment() {
-        super();
+    public void setCommentVoList(List<CommentVo> commentVoList) {
+        this.commentVoList = commentVoList;
     }
 
     public String getCommentId() {
@@ -36,7 +47,7 @@ public class Comment {
     }
 
     public void setCommentId(String commentId) {
-        this.commentId = commentId == null ? null : commentId.trim();
+        this.commentId = commentId;
     }
 
     public String getCommentUserId() {
@@ -44,7 +55,7 @@ public class Comment {
     }
 
     public void setCommentUserId(String commentUserId) {
-        this.commentUserId = commentUserId == null ? null : commentUserId.trim();
+        this.commentUserId = commentUserId;
     }
 
     public String getCommentArticleId() {
@@ -52,7 +63,7 @@ public class Comment {
     }
 
     public void setCommentArticleId(String commentArticleId) {
-        this.commentArticleId = commentArticleId == null ? null : commentArticleId.trim();
+        this.commentArticleId = commentArticleId;
     }
 
     public String getCommentFarther() {
@@ -60,7 +71,7 @@ public class Comment {
     }
 
     public void setCommentFarther(String commentFarther) {
-        this.commentFarther = commentFarther == null ? null : commentFarther.trim();
+        this.commentFarther = commentFarther;
     }
 
     public String getCommentContent() {
@@ -68,7 +79,7 @@ public class Comment {
     }
 
     public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent == null ? null : commentContent.trim();
+        this.commentContent = commentContent;
     }
 
     public Date getCreateTime() {

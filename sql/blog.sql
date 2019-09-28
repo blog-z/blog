@@ -38,6 +38,8 @@ create table blog_comment(
 	comment_article_id varchar(32) not null comment '评论的谁',
 	comment_farther varchar(32) not null default '0' comment '评论的评论,默认0，评论的是文章，如果不是文章就是评论的评论的comment_id',
 	comment_content varchar(200) not null comment '评论内容',
+    create_time timestamp not null default current_timestamp comment '创建时间',
+    update_time timestamp not null default current_timestamp on update current_timestamp comment '修改时间',
 	primary key (comment_id),
 	unique index_comment_id (comment_id)
 ) comment '评论实体类';

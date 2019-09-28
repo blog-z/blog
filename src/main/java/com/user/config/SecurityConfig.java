@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             "/ueditor/**",
             "**/favicon.ico",
-            "/upload/**"
+            "/upload/**",
+            "/comment/**"
             // other public endpoints of your API may be appended to this array
     };
 
