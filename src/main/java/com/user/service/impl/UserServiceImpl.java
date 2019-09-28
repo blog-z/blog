@@ -20,9 +20,6 @@ import java.util.UUID;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-
-    private static final Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Autowired
     private UserMapper userMapper;
 
@@ -39,24 +36,24 @@ public class UserServiceImpl implements UserService {
         if (!bCryptPasswordEncoder.matches(userPassword,userMapper.selectPasswordByUserNameForSecurity(userName))){
             return ServerResponse.createByErrorMessage("用户名或密码错误");
         }
-        return ServerResponse.createBySuccess("登录成功！",user);
+        return ServerResponse.createBySuccessMessage("登录成功");
     }
 
     //注册
     public ServerResponse<String> register(User user){
-        String response=null;
+        String response="";
         int countUserName=userMapper.selectByUserNameOrEmailOrPhone(user.getUserName(),null,null);
         int countUserEmail=userMapper.selectByUserNameOrEmailOrPhone(null,user.getUserEmail(),null);
         int countPhone=userMapper.selectByUserNameOrEmailOrPhone(null,null,user.getUserPhone());
         if (countUserName+countUserEmail+countPhone!=0){
             if (countUserName!=0){
                 response+="用户名";
-                if (countUserEmail!=0) {
-                    response+="邮箱";
-                    if (countPhone != 0) {
-                        response+="电话号码";
-                    }
-                }
+            }
+            if (countUserEmail!=0) {
+                response+="邮箱";
+            }
+            if (countPhone != 0) {
+                response+="电话号码";
             }
             return ServerResponse.createByErrorMessage(response+"已存在");
         }
@@ -77,6 +74,7 @@ public class UserServiceImpl implements UserService {
     public ServerResponse getUserMessage(String userName, String userEmail){
         User user= JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,userEmail);
         user.setUserPassword("空");
+        user.setUserAnswer("空");
         return ServerResponse.createBySuccess("spring security",user);
     }
 
@@ -103,7 +101,7 @@ public class UserServiceImpl implements UserService {
         if (JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,userEmail).getUserAnswer().equals(answer)){
             String token= UUID.randomUUID().toString();
             JedisUtil.setToken(userName,userEmail,token);
-            return ServerResponse.createBySuccessMessage(token);
+            return ServerResponse.createBySuccessMessage(token+"此值60秒内有效");
         }
         return ServerResponse.createByErrorMessage("问题的答案错误");
     }

@@ -26,16 +26,9 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         logger.info("------loadUserByUsername------="+userName+"=---用户登录了---------------");
         UserDetails userDetails=new User(
-                userName,
-                userMapper.selectPasswordByUserNameForSecurity(userName),
-                AuthorityUtils.commaSeparatedStringToAuthorityList(userMapper.selectRoleByUserNameForSecurity(userName)));
-
-        logger.info(
-                        userName+"======="+
-                        userMapper.selectPasswordByUserNameForSecurity(userName)+"========="+
-                        AuthorityUtils.commaSeparatedStringToAuthorityList(userMapper.selectRoleByUserNameForSecurity(userName))
-                );
-
+                userName,   //用户名
+                userMapper.selectPasswordByUserNameForSecurity(userName),   //数据库中加密后的密码
+                AuthorityUtils.commaSeparatedStringToAuthorityList(userMapper.selectRoleByUserNameForSecurity(userName)));  //权限集合
         return userDetails;
     }
 

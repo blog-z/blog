@@ -1,7 +1,6 @@
 package com.user.controller;
 
 import com.dubbo.commons.ServerResponse;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.user.entity.Comment;
 import com.user.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.*;
 
 /**
  * 实现高并发
@@ -43,7 +41,6 @@ public class CommentController {
     public ServerResponse updateComment(String commentId,String commentContent){
         return commentService.updateComment(commentId,commentContent);
     }
-
     @RequestMapping(value = "selectComment",method = RequestMethod.POST)
     public ServerResponse selectComment(String articleId){
         return commentService.selectComment(articleId);

@@ -21,12 +21,12 @@ public class MyAuthenticationFailHandler extends SimpleUrlAuthenticationFailureH
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             //可在此记录登录失败次数，进行锁定
-            ResponseUtil.out(response, ServerResponse.createByErrorMessage("用户名或密码错误"));
+            ResponseUtil.out(response, ServerResponse.createByErrorMessage("密码错误"));
         } else if (exception instanceof DisabledException) {
             ResponseUtil.out(response,ServerResponse.createByErrorMessage("账户被禁用，请联系管理员"));
             //可以新增登录异常次数超限LoginFailLimitException
         } else {
-            ResponseUtil.out(response,ServerResponse.createByErrorMessage("登录失败"));
+            ResponseUtil.out(response,ServerResponse.createByErrorMessage("没有此用户失败"));
         }
     }
 }

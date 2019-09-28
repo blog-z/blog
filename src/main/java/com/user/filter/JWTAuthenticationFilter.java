@@ -7,7 +7,6 @@ import com.user.utils.ResponseUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,7 +46,6 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         chain.doFilter(request,response);
-        return;
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -60,9 +58,9 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                         .getBody();
 
                 //获取用户名
-                String username = claims.getSubject();
+                String userName = claims.getSubject();
                 String userId=claims.getId();
-                //获取权限（角色）
+                //获取权限（角色)
                 List<GrantedAuthority> authorities = new ArrayList<>();
                 String authority = claims.get(JwtTokenUtil.authHeader).toString();
                 if(!StringUtils.isEmpty(authority)){
@@ -75,13 +73,12 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                         }
                     }
                 }
-                if(!StringUtils.isEmpty(username)) {
+                if(!StringUtils.isEmpty(userName)) {
                     //此处password不能为null
-                    User principal = new User(username, "", authorities);
+                    User principal = new User(userName, "", authorities);
                     return new UsernamePasswordAuthenticationToken(principal, userId, authorities);
                 }
             } catch (ExpiredJwtException e) {
-                System.out.println("token 超过有效期，请重新登录");
                 ResponseUtil.out(response, ServerResponse.createByErrorMessage("token 超过有效期，请重新登录"));
             } catch (Exception e){
                 ResponseUtil.out(response,ServerResponse.createByErrorMessage("token 是错误的"));

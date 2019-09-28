@@ -28,10 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 需要放行的URL
      */
     private static final String[] AUTH_WHITELIST = {
-            // -- register url
             "/user/login",
             "/user/register",
-            // -- swagger ui
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
@@ -41,8 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             "/ueditor/**",
             "**/favicon.ico",
-            "/upload/**",
-            "/comment/**"
             // other public endpoints of your API may be appended to this array
     };
 
