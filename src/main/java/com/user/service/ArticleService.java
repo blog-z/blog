@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ArticleService {
 
-    ImgResultDto uploadImage(List<MultipartFile> list, String UploadAbsolutePath, String UploadRelativePath, int commodityId);
+    ImgResultDto uploadImage(List<MultipartFile> list, int commodityId);
 }

@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
     //修改密码
     public ServerResponse setPassword(String userName, String userEmail, String password){
         User user=userMapper.selectByUserNameOrEmail(userName,userEmail);
-        user.setUserPassword(password);
+        user.setUserPassword(bCryptPasswordEncoder.encode(password));
         int count=userMapper.updateByPrimaryKey(user);
         if (count==1){
             JedisUtil.setUserToRedis(user);

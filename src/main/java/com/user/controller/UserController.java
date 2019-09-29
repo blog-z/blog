@@ -49,28 +49,19 @@ public class UserController {
 
     //忘记密码，得到忘记密码问题
     @RequestMapping(value = "getQuestion",method = RequestMethod.POST)
-    public ServerResponse getQuestion(HttpServletRequest httpServletRequest,String userName, String userEmail){
-        if (!checkRole(httpServletRequest, userName)){
-            return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
-        }
+    public ServerResponse getQuestion(String userName, String userEmail){
         return userService.getQuestion(userName,userEmail);
     }
 
     //输入忘记密码的问题答案   并给一个token 存入redis并有60秒时间限制
     @RequestMapping(value = "setAnswer",method = RequestMethod.POST)
-    public ServerResponse setAnswer(HttpServletRequest httpServletRequest,String userName, String userEmail, String answer){
-        if (!checkRole(httpServletRequest, userName)){
-            return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
-        }
+    public ServerResponse setAnswer(String userName, String userEmail, String answer){
         return userService.setAnswer(userName,userEmail,answer);
     }
 
     //输入新密码
     @RequestMapping(value = "setPassword",method = RequestMethod.POST)
-    public ServerResponse setPassword(HttpServletRequest httpServletRequest,String userName, String userEmail, String password, String token){
-        if (!checkRole(httpServletRequest, userName)){
-            return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
-        }
+    public ServerResponse setPassword(String userName, String userEmail, String password, String token){
         if (!token.equals(JedisUtil.getToken(userName,userEmail))){
             return ServerResponse.createByErrorMessage("操作时间超时，请重新操作");
         }

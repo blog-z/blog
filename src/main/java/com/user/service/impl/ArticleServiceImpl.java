@@ -16,18 +16,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     private static final Logger logger= LoggerFactory.getLogger(ArticleServiceImpl.class);
 
+    //图片的保存路径应为 主路径+用户名+时间(2019-08-12)
+
+
     //图片保存的主路径(即在nginx静态图片服务器下) /usr/local/nginx/
     private static final String imagePath="/usr/local/nginx/wangEditor-3.1.1/images/";
 
     /**
      * 上传图片
      */
-    public ImgResultDto uploadImage(List<MultipartFile> list, String UploadAbsolutePath, String UploadRelativePath, int commodityId){
+    public ImgResultDto uploadImage(List<MultipartFile> list, int commodityId){
 
-        //工程绝对路径
-        String imgUploadAbsolutePath = UploadAbsolutePath;
-        //工程相对路径
-        String imgUploadRelativePath = UploadRelativePath;
 
         //这是wangEditor富文本编辑器的上传图片的返回值类
         ImgResultDto imgResultDto = new ImgResultDto();
@@ -54,8 +53,6 @@ public class ArticleServiceImpl implements ArticleService {
                 //保存文件到本地
                 img.transferTo(newFile);
                 logger.info("上传图片成功");
-                //持久化到数据库,数据库只保存图片的位置
-                logger.info("数据库写入图片成功");
                 //这里的路径是项目路径＋文件路径＋文件名称
                 //这么写不是规范的做法，项目路径应是放在前端处理，只需要发送相对路径和文件名称即可，项目路径由前端加上．
                 urlData[index++] = "http://localhost:8082/images/"+finalFileName;

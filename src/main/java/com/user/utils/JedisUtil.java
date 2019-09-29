@@ -37,7 +37,6 @@ public class JedisUtil {
         }else {
             return jedisCluster.del(key);
         }
-
     }
 
 
@@ -108,9 +107,16 @@ public class JedisUtil {
         jedisCluster.set(user.getUserName(), JsonUtil.objToString(user));
     }
 
+
+
     public static String getUserId(){
         jedisCluster.set("userId",String.valueOf(Integer.parseInt(jedisCluster.get("userId"))+1));
         return String.valueOf(Integer.parseInt(jedisCluster.get("userId"))-1);
+    }
+
+    public static String getArticleId(){
+        jedisCluster.set("articleId",String.valueOf(Integer.parseInt(jedisCluster.get("articleId"))+1));
+        return String.valueOf(Integer.parseInt(jedisCluster.get("articleId"))-1);
     }
 
 }
