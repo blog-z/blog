@@ -13,4 +13,6 @@ public interface CommentService {
     ServerResponse updateComment(String commentId,String commentContent);
 
     ServerResponse selectComment(String articleId);
+
+    void deleteCommentsForDeleteArticle(String articleId);
 }

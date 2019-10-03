@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.user.mapper.MessageMapper" >
+  <resultMap id="BaseResultMap" type="com.user.entity.Message" >
+    <constructor >
+      <idArg column="message_id" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="message_user_id" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="message_user_get_id" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="message_comment" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_message
+    where message_id = #{messageId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.user.entity.Message" >
+    insert into blog_message (message_id, message_user_id, message_user_get_id, 
+      message_comment, create_time)
+    values (#{messageId,jdbcType=CHAR}, #{messageUserId,jdbcType=CHAR}, #{messageUserGetId,jdbcType=CHAR}, 
+      #{messageComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.user.entity.Message" >
+    update blog_message
+    set message_user_id = #{messageUserId,jdbcType=CHAR},
+      message_user_get_id = #{messageUserGetId,jdbcType=CHAR},
+      message_comment = #{messageComment,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where message_id = #{messageId,jdbcType=CHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'false' as QUERYID,message_id, message_user_id, message_user_get_id, message_comment, 
+    create_time
+    from blog_message
+    where message_id = #{messageId,jdbcType=CHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select message_id, message_user_id, message_user_get_id, message_comment, create_time
+    from blog_message
+  </select>
+</mapper>

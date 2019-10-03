@@ -148,7 +148,8 @@
 
             注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
          -->
-        <table tableName="blog_comment" domainObjectName="Comment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>
+<!--        <table tableName="blog_comment" domainObjectName="Comment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>-->
+        <table tableName="blog_message" domainObjectName="Message" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByPrimaryKeyQueryId="false"/>
 
     </context>
 

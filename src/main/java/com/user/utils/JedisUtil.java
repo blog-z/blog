@@ -5,9 +5,6 @@ import com.user.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.JedisCluster;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 public class JedisUtil {
     private static JedisCluster jedisCluster= RedisPoolConfig.getJedisCluster();
 
@@ -31,12 +28,8 @@ public class JedisUtil {
     }
 
     //删除key-value，一级方法
-    public static Long delKey(String key){
-        if (key==null){
-            return 1L;
-        }else {
-            return jedisCluster.del(key);
-        }
+    public static void delKey(String key){
+        jedisCluster.del(key);
     }
 
 
@@ -109,14 +102,27 @@ public class JedisUtil {
 
 
 
+    //自增ID
     public static String getUserId(){
         jedisCluster.set("userId",String.valueOf(Integer.parseInt(jedisCluster.get("userId"))+1));
         return String.valueOf(Integer.parseInt(jedisCluster.get("userId"))-1);
     }
 
+    //自增ID
     public static String getArticleId(){
         jedisCluster.set("articleId",String.valueOf(Integer.parseInt(jedisCluster.get("articleId"))+1));
         return String.valueOf(Integer.parseInt(jedisCluster.get("articleId"))-1);
     }
 
+    //自增ID
+    public static String getCommentId(){
+        jedisCluster.set("commentId",String.valueOf(Integer.parseInt(jedisCluster.get("commentId"))+1));
+        return String.valueOf(Integer.parseInt(jedisCluster.get("commentId"))-1);
+    }
+
+    //自增ID
+    public static String getMessageId(){
+        jedisCluster.set("messageId",String.valueOf(Integer.parseInt(jedisCluster.get("messageId"))+1));
+        return String.valueOf(Integer.parseInt(jedisCluster.get("messageId"))-1);
+    }
 }

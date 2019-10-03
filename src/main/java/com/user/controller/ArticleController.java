@@ -5,12 +5,10 @@ import com.dubbo.commons.Const;
 import com.dubbo.commons.ImgResultDto;
 import com.dubbo.commons.ServerResponse;
 import com.dubbo.entity.Article;
-import com.user.entity.User;
 import com.user.service.ArticleService;
+import com.user.service.CommentService;
 import com.user.utils.JedisUtil;
-import com.user.utils.JsonUtil;
 import com.user.utils.JwtTokenUtil;
-import com.user.vo.GetElasticsearchResultVo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.apache.dubbo.config.annotation.Reference;
@@ -30,12 +28,15 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private CommentService commentService;
+
     @Reference(version = "1.0.0")
     private ElasticsearchService elasticsearchService;
 
     @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = RequestMethod.OPTIONS, maxAge = 3600)
     @RequestMapping(value = "uploadImage")
-    public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list, HttpServletRequest request, HttpServletResponse response){
+    public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list, HttpServletResponse response){
         //允许任何请求访问
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:8082");
 //        response.setHeader("Access-Control-Allow-Headers", "Content-Length,X-Requested-With,content-type");
@@ -54,14 +55,14 @@ public class ArticleController {
         //使用userName从redis反序列化出user，在得到userId->article_user_id
         Article article=new Article(
                 JedisUtil.getArticleId(),
-                JsonUtil.stringToObj(JedisUtil.getValue(userName), User.class).getUserId(),
+                JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId(),
                 articleTitle,
                 articleContent,
                 null,
                 null
         );
         //将articleId-articleUserId存入redis中  commentId-1 10
-        JedisUtil.setKey(Const.Role.COMMENT_ID +article.getArticleId(),article.getArticleUserId());
+        JedisUtil.setKey(Const.RedisKey.BeforeArticleKeyId +article.getArticleId(),article.getArticleUserId());
 
         return elasticsearchService.addArticle(article);
     }
@@ -73,10 +74,14 @@ public class ArticleController {
             return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
         }
         //根据文章ID查出此文章所属用户ID，比较ID是否相同
-        String articleUserId=JedisUtil.getValue(Const.Role.COMMENT_ID+articleId);
-        if (!JsonUtil.stringToObj(JedisUtil.getValue(userName), User.class).getUserId().equals(articleUserId)){
+        String articleUserId=JedisUtil.getValue(Const.RedisKey.BeforeArticleKeyId+articleId);
+        if (!JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId().equals(articleUserId)){
             return ServerResponse.createByErrorMessage("不要删除别人的文章");
         }
+        //也要把redis中存的articleId-articleUserId删除
+        JedisUtil.delKey(Const.RedisKey.BeforeArticleKeyId+articleId);
+        //也要把评论过此文章的评论删除
+        commentService.deleteCommentsForDeleteArticle(articleId);
         return elasticsearchService.deleteArticle(articleId);
     }
 
@@ -87,11 +92,11 @@ public class ArticleController {
             return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
         }
         //根据文章ID查出此文章所属用户ID，比较ID是否相同
-        String articleUserId=JedisUtil.getValue(Const.Role.COMMENT_ID+article.getArticleId());
-        if (!JsonUtil.stringToObj(JedisUtil.getValue(userName), User.class).getUserId().equals(articleUserId)){
+        String articleUserId=JedisUtil.getValue(Const.RedisKey.BeforeArticleKeyId+article.getArticleId());
+        if (!JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId().equals(articleUserId)){
             return ServerResponse.createByErrorMessage("不要更新别人的文章");
         }
-        article.setArticleUserId(JsonUtil.stringToObj(JedisUtil.getValue(userName), User.class).getUserId());
+        article.setArticleUserId(JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId());
         return elasticsearchService.updateArticle(article);
     }
 
@@ -102,8 +107,8 @@ public class ArticleController {
             return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
         }
         //根据文章ID查出此文章所属用户ID，比较ID是否相同
-        String articleUserId=JedisUtil.getValue(Const.Role.COMMENT_ID+articleId);
-        if (!JsonUtil.stringToObj(JedisUtil.getValue(userName), User.class).getUserId().equals(articleUserId)){
+        String articleUserId=JedisUtil.getValue(Const.RedisKey.BeforeArticleKeyId+articleId);
+        if (!JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId().equals(articleUserId)){
             return ServerResponse.createByErrorMessage("通过这种方式只能得到自己的文章，不能得到别人的文章");
         }
 

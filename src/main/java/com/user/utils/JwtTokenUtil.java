@@ -1,12 +1,15 @@
 package com.user.utils;
 
 import com.user.config.SecurityUserDetails;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -76,5 +79,21 @@ public class JwtTokenUtil {
                             .signWith(SignatureAlgorithm.HS256,secret)
                             .compact();
         return tokenPrefix+token;
+    }
+
+    //判断token对错     对-true  错-false
+    public static Boolean checkRole(HttpServletRequest httpServletRequest, String userName){
+        String token = httpServletRequest.getHeader(JwtTokenUtil.tokenHeader);
+        if (!StringUtils.isEmpty(token)) {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(JwtTokenUtil.secret)
+                    .parseClaimsJws(token.replace(JwtTokenUtil.tokenPrefix, ""))
+                    .getBody();
+            //相等jwt中token和用户名一致
+            if (claims.getSubject().equals(userName)){
+                return true;
+            }
+        }
+        return false;
     }
 }

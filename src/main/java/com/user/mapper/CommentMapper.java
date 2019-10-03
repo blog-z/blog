@@ -21,4 +21,5 @@ public interface CommentMapper {
     List<Comment> selectCommentByFartherId(String fartherId);
 
     List<Comment> selectCommentByArticleIdAndFartherId(@Param(value = "articleId")String articleId,@Param(value = "fartherId")String fartherId);
+
 }

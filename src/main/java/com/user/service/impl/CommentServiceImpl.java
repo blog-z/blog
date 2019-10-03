@@ -1,7 +1,7 @@
 package com.user.service.impl;
 
+import com.dubbo.commons.Const;
 import com.dubbo.commons.ServerResponse;
-import com.sun.jersey.core.util.StringIgnoreCaseKeyComparator;
 import com.user.entity.Comment;
 import com.user.mapper.CommentMapper;
 import com.user.service.CommentService;
@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService{
             int count=commentMapper.insert(comment);
             if (count>0){
                 //说明存入数据库成功，接下来存入redis
-                JedisUtil.setEntityToRedis(comment.getCommentId(),comment);
+                JedisUtil.setEntityToRedis(Const.RedisKey.BeforeCommentKeyId+comment.getCommentId(),comment);
                 return ServerResponse.createBySuccessMessage("发表评论成功");
             }else {
                 return ServerResponse.createByErrorMessage("发表评论失败");
@@ -40,9 +40,10 @@ public class CommentServiceImpl implements CommentService{
     //删除评论
     public ServerResponse deleteComment(String commentId){
         if (commentId!=null){
+            //删除评论也要删除它的子评论
             int count=commentMapper.deleteByPrimaryKey(commentId);
             if (count>0){
-                JedisUtil.delKey(commentId);
+                deleteComments(commentId);
                 return ServerResponse.createBySuccessMessage("删除评论成功");
             }else {
                 return ServerResponse.createByErrorMessage("删除评论失败");
@@ -60,7 +61,7 @@ public class CommentServiceImpl implements CommentService{
             comment.setCommentContent(commentContent);
             int count=commentMapper.updateByPrimaryKey(comment);
             if (count>0){
-                JedisUtil.setEntityToRedis(commentId,comment);
+                JedisUtil.setEntityToRedis(Const.RedisKey.BeforeCommentKeyId+commentId,comment);
                 return ServerResponse.createBySuccessMessage("更新评论成功");
             }
             return ServerResponse.createByErrorMessage("更新数据库失败");
@@ -72,13 +73,35 @@ public class CommentServiceImpl implements CommentService{
                 comment.setCommentContent(commentContent);
                 int count=commentMapper.updateByPrimaryKey(comment);
                 if (count>0){
-                    JedisUtil.setEntityToRedis(commentId,comment);
+                    JedisUtil.setEntityToRedis(Const.RedisKey.BeforeCommentKeyId+commentId,comment);
                     return ServerResponse.createBySuccessMessage("更新评论成功");
                 }
             }
             return ServerResponse.createByErrorMessage("没有此评论");
         }
 
+    }
+
+    //删除评论，删除文章用
+    public void deleteCommentsForDeleteArticle(String articleId){
+        List<Comment> commentList=commentMapper.selectCommentByArticleIdAndFartherId(articleId,"0");
+        for (Comment comment : commentList){
+            //删除redis中的评论和mysql中的
+            deleteComments(comment.getCommentId());
+        }
+    }
+
+    //删除评论及其子评论
+    private void deleteComments(String commentId){
+        List<Comment> commentList=commentMapper.selectCommentByFartherId(commentId);
+        if (commentList.size()==0){
+            JedisUtil.delKey(Const.RedisKey.BeforeCommentKeyId+commentId);
+            commentMapper.deleteByPrimaryKey(commentId);
+        }else {
+            for (Comment comment : commentList){
+                deleteComments(comment.getCommentId());
+            }
+        }
     }
 
 
