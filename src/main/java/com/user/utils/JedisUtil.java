@@ -125,4 +125,11 @@ public class JedisUtil {
         jedisCluster.set("messageId",String.valueOf(Integer.parseInt(jedisCluster.get("messageId"))+1));
         return String.valueOf(Integer.parseInt(jedisCluster.get("messageId"))-1);
     }
+
+    //判断是否登录过，登录过--true 没登录或异地登录--false
+    public static Boolean isUserLogin(String userNameLogin,String loginUrl){
+        String url=jedisCluster.get(userNameLogin);
+        return loginUrl.equals(url);
+    }
+
 }

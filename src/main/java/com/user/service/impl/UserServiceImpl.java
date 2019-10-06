@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
         if (!bCryptPasswordEncoder.matches(userPassword,userMapper.selectPasswordByUserNameForSecurity(userName))){
             return ServerResponse.createByErrorMessage("用户名或密码错误");
         }
+//        if ()
         return ServerResponse.createBySuccessMessage("登录成功");
     }
 

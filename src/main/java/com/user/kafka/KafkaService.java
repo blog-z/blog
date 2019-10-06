@@ -24,10 +24,10 @@ public class KafkaService {
         String key=consumerRecord.key();
         String value=consumerRecord.value();
         String topic=consumerRecord.topic();
-        Message message= JsonUtil.stringToObj(value.toString(),Message.class);
-        logger.info("key"+key);
-        logger.info("value"+value);
-        logger.info("topic"+topic);
+        Message message= JsonUtil.stringToObj(value,Message.class);
+        logger.info("key:"+key);
+        logger.info("value:"+value);
+        logger.info("topic:"+topic);
         deferredResultHolder.getMap().get(message.getMessageId()).setResult(ServerResponse.createBySuccessMessage("成功处理"));
     }
 }
