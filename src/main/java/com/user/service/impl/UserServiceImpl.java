@@ -8,8 +8,6 @@ import com.user.service.UserService;
 import com.user.utils.JedisUtil;
 import com.user.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

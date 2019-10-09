@@ -193,7 +193,12 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <!--aspect-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>5.0.15.RELEASE</version>
+        </dependency>
 
 
     </dependencies>
