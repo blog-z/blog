@@ -27,14 +27,9 @@ public class UserServiceImpl implements UserService {
 
     //登录
     public ServerResponse login(String userName, String userEmail, String userPassword){
-        User user= JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,userEmail);
-        if (user==null){
-            return ServerResponse.createByErrorMessage("用户名不存在");
-        }
         if (!bCryptPasswordEncoder.matches(userPassword,userMapper.selectPasswordByUserNameForSecurity(userName))){
             return ServerResponse.createByErrorMessage("用户名或密码错误");
         }
-//        if ()
         return ServerResponse.createBySuccessMessage("登录成功");
     }
 

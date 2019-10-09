@@ -41,10 +41,7 @@ public class UserController {
     //得到用户详细信息
     @RequestMapping(value = "getUserMessage",method = RequestMethod.POST)
     public ServerResponse getUserMessage(HttpServletRequest httpServletRequest,String userName, String userEmail){
-        if (checkRole(httpServletRequest,userName)){
-            return userService.getUserMessage(userName,userEmail);
-        }
-        return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
+        return userService.getUserMessage(userName,userEmail);
     }
 
     //忘记密码，得到忘记密码问题
@@ -71,20 +68,7 @@ public class UserController {
 
 
 
-    private Boolean checkRole(HttpServletRequest httpServletRequest,String userName){
-        String token = httpServletRequest.getHeader(JwtTokenUtil.tokenHeader);
-        if (!StringUtils.isEmpty(token)) {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(JwtTokenUtil.secret)
-                    .parseClaimsJws(token.replace(JwtTokenUtil.tokenPrefix, ""))
-                    .getBody();
-            //相等jwt中token和用户名一致
-            if (claims.getSubject().equals(userName)){
-                return true;
-            }
-        }
-        return false;
-    }
+
 }
 
 
