@@ -70,14 +70,6 @@ public class ArticleController {
     //删除文章
     @RequestMapping(value = "deleteArticle",method = RequestMethod.POST)
     public ServerResponse deleteArticle(HttpServletRequest httpServletRequest,String userName,String articleId){
-        if (!checkRole(httpServletRequest, userName)){
-            return ServerResponse.createByErrorMessage("你使用的用户名和jwt token不一致");
-        }
-        //根据文章ID查出此文章所属用户ID，比较ID是否相同
-        String articleUserId=JedisUtil.getValue(Const.RedisKey.BeforeArticleKeyId+articleId);
-        if (!JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId().equals(articleUserId)){
-            return ServerResponse.createByErrorMessage("不要删除别人的文章");
-        }
         //也要把redis中存的articleId-articleUserId删除
         JedisUtil.delKey(Const.RedisKey.BeforeArticleKeyId+articleId);
         //也要把评论过此文章的评论删除
@@ -141,9 +133,7 @@ public class ArticleController {
                     .parseClaimsJws(token.replace(JwtTokenUtil.tokenPrefix, ""))
                     .getBody();
             //相等jwt中token和用户名一致
-            if (claims.getSubject().equals(userName)){
-                return true;
-            }
+            return claims.getSubject().equals(userName);
         }
         return false;
     }
