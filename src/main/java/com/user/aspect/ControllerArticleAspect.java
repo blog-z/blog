@@ -22,7 +22,7 @@ public class ControllerArticleAspect {
     public void pointcut(){}
 
     @Around(value = "pointcut()")
-    public Object deleteArticle(ProceedingJoinPoint proceedingJoinPoint){
+    public Object deleteArticle(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object[] proceedingJoinPointArgs = proceedingJoinPoint.getArgs();
         HttpServletRequest httpServletRequest=(HttpServletRequest) proceedingJoinPointArgs[0];
         String userName=(String) proceedingJoinPointArgs[1];
@@ -35,7 +35,7 @@ public class ControllerArticleAspect {
         if (!JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,null).getUserId().equals(articleUserId)){
             return ServerResponse.createByErrorMessage("不要删除别人的文章");
         }
-        return null;
+        return proceedingJoinPoint.proceed();
     }
 
     private Boolean checkRole(HttpServletRequest httpServletRequest, String userName){
