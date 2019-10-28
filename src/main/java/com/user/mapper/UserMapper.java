@@ -26,4 +26,7 @@ public interface UserMapper {
     String selectPasswordByUserNameForSecurity(String userName);
 
     String selectRoleByUserNameForSecurity(String userName);
+
+    //通过userEmail查找用户
+    User selectByUserEmail(String userEmail);
 }

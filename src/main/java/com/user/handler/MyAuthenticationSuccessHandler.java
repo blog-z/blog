@@ -17,12 +17,11 @@ import java.io.IOException;
 @Component
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         User user=(User) authentication.getPrincipal();
         SecurityUserDetails securityUserDetails=new SecurityUserDetails(user.getUsername(),user.getAuthorities());
         String token=JwtTokenUtil.getToken(securityUserDetails);
-        ResponseUtil.out(response, ServerResponse.createBySuccessMessage("登录成功!   accessToken=="+token));
+        ResponseUtil.out(response, ServerResponse.createBySuccess("登录成功!",token));
     }
 }

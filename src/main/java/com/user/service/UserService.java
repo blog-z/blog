@@ -15,4 +15,8 @@ public interface UserService {
     ServerResponse setPassword(String userName, String userEmail, String password);
 
     ServerResponse getUserMessage(String userName, String userEmail);
+
+    ServerResponse<String> checkRegisterUserNameOrEmail(String userName);
+
+    ServerResponse getEmailNumber(String userEmail);
 }

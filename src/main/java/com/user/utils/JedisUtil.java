@@ -22,7 +22,7 @@ public class JedisUtil {
     }
 
     //key-value加入redis并设置时间keyTime，一级方法
-    private static void setKeyTime(String key, String value, int keyTime){
+    public static void setKeyTime(String key, String value, int keyTime){
         jedisCluster.set(key,value);
         jedisCluster.expire(key,keyTime);
     }

@@ -34,13 +34,17 @@ public class ArticleController {
     @Reference(version = "1.0.0")
     private ElasticsearchService elasticsearchService;
 
-    @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = RequestMethod.OPTIONS, maxAge = 3600)
+    @CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", maxAge = 3600)
     @RequestMapping(value = "uploadImage")
-    public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list, HttpServletResponse response){
-        //允许任何请求访问
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:8082");
-//        response.setHeader("Access-Control-Allow-Headers", "Content-Length,X-Requested-With,content-type");
-        response.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    public ImgResultDto uploadImage(@RequestParam("uploadImage") List<MultipartFile> list,HttpServletRequest httpServletRequest, HttpServletResponse response){
+        //是否跨域的验证请求
+        if(httpServletRequest.getMethod().equals("OPTIONS")){
+            //允许任何请求访问
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:8082");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Length,X-Requested-With,content-type");
+            response.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+            return null;
+        }
 
         //服务曾处理数据，返回Dto
         return articleService.uploadImage(list,1);

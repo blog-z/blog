@@ -1,8 +1,5 @@
 package com.user.entity;
 
-import lombok.Builder;
-import org.springframework.data.annotation.Id;
-
 import java.util.Date;
 
 public class User {

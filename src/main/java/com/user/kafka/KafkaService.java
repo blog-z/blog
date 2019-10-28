@@ -20,14 +20,16 @@ public class KafkaService {
 
     @KafkaListener(topics = "blogGet",groupId = "blogProducerGroup")
     public void listenKafka(ConsumerRecord<String,String> consumerRecord){
-        //监听kafka topic blogSend
-        String key=consumerRecord.key();
-        String value=consumerRecord.value();
-        String topic=consumerRecord.topic();
-        Message message= JsonUtil.stringToObj(value,Message.class);
-        logger.info("key:"+key);
-        logger.info("value:"+value);
-        logger.info("topic:"+topic);
-        deferredResultHolder.getMap().get(message.getMessageId()).setResult(ServerResponse.createBySuccessMessage("成功处理"));
+        new Thread(() -> {
+            //监听kafka topic blogSend
+            String key=consumerRecord.key();
+            String value=consumerRecord.value();
+            String topic=consumerRecord.topic();
+            Message message= JsonUtil.stringToObj(value,Message.class);
+            logger.info("key:"+key);
+            logger.info("value:"+value);
+            logger.info("topic:"+topic);
+            deferredResultHolder.getMap().get(message.getMessageId()).setResult(ServerResponse.createBySuccessMessage("成功处理"));
+        }).start();
     }
 }

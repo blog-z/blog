@@ -6,7 +6,6 @@ import com.user.kafka.DeferredResultHolder;
 import com.user.service.MessageService;
 import com.user.utils.JedisUtil;
 import com.user.utils.JsonUtil;
-import com.user.utils.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import javax.servlet.http.HttpServletRequest;
 
 @Service(value = "messageService")
 public class MessageServiceImpl implements MessageService {
