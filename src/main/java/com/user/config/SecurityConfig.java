@@ -37,6 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/user/getEmailCheck",
             "/user/setAnswer",
             "/user/setPassword",
+            "/user/getEmailCheck",
+            "/user/setPasswordByEmail",
             "/upload/uploadImage",
             "/v2/api-docs",
             "/swagger-resources",

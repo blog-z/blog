@@ -61,6 +61,12 @@ public class UserController {
         return userService.getEmailNumber(userEmail);
     }
 
+    //忘记密码，通过email
+    @RequestMapping(value = "setPasswordByEmail",method = RequestMethod.POST)
+    public ServerResponse setPasswordByEmail(String userEmail,String passwordNumber,String password){
+        return userService.EmailSetPassword(userEmail,passwordNumber,password);
+    }
+
     //输入忘记密码的问题答案   并给一个token 存入redis并有60秒时间限制
     @RequestMapping(value = "setAnswer",method = RequestMethod.POST)
     public ServerResponse setAnswer(String userName, String userEmail, String answer){

@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
         if (JedisUtil.getUserFoRedisByUserNameOrUserEmail(userName,userEmail).getUserAnswer().equals(answer)){
             String token= UUID.randomUUID().toString();
             JedisUtil.setToken(userName,userEmail,token);
-            return ServerResponse.createBySuccessMessage(token+"此值60秒内有效");
+            return ServerResponse.createBySuccessMessage(token);
         }
         return ServerResponse.createByErrorMessage("问题的答案错误");
     }
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
     public ServerResponse getEmailNumber(String userEmail){
         User user= JsonUtil.stringToObj(JedisUtil.getValue(userEmail),User.class);
         if (user==null){
-            return ServerResponse.createByErrorMessage("用户不存在");
+            return ServerResponse.createByErrorMessage("此Email未注册");
         }
         Random random=new Random();
         String passwordNumber=String.valueOf(random.nextInt(999999)+100000);
@@ -172,11 +172,11 @@ public class UserServiceImpl implements UserService {
                 message.setText("您的忘记密码的验证码(只有60秒有效)："+passwordNumber);//内容
                 message.setFrom(from);//发信人
                 javaMailSender.send(message);
-                JedisUtil.setKeyTime(userEmail+passwordNumber,passwordNumber,60);
             } catch (Exception e) {
                 logger.info("错误"+e);
             }
-            return ServerResponse.createBySuccessMessage("发送验证码成功");
+            JedisUtil.setToken(null,userEmail,passwordNumber);
+            return ServerResponse.createBySuccessMessage("发送email成功");
         }else {
             return ServerResponse.createByErrorMessage("email不能为空");
         }
@@ -186,17 +186,17 @@ public class UserServiceImpl implements UserService {
     public ServerResponse EmailSetPassword(String userEmail,String passwordNumber,String password){
         User user=userMapper.selectByUserEmail(userEmail);
         user.setUserPassword(bCryptPasswordEncoder.encode(password));
-        if (JedisUtil.getValue(userEmail + passwordNumber)==null){
+        if (JedisUtil.getToken(null,userEmail)==null){
             return ServerResponse.createByErrorMessage("超时，请重新发送");
         }
-        if (passwordNumber!=null&&!passwordNumber.equals(JedisUtil.getValue(userEmail + passwordNumber))){
+        if (passwordNumber!=null&&!passwordNumber.equals(JedisUtil.getToken(null,userEmail))){
             return ServerResponse.createByErrorMessage("验证码错误");
         }
         int count=userMapper.updateByPrimaryKey(user);
         if (count==1){
             JedisUtil.setUserToRedis(user);
             //删除redis中的token数据，防止不需要重新获取token就能修改
-            JedisUtil.delKey(userEmail+passwordNumber);
+            JedisUtil.delToken(null,userEmail);
             return ServerResponse.createBySuccessMessage("修改密码成功");
         }
         return ServerResponse.createBySuccessMessage("修改密码失败");
