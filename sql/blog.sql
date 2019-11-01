@@ -16,9 +16,19 @@ create table blog_user(
         create_time timestamp not null default current_timestamp comment '创建时间',
         update_time timestamp not null default current_timestamp on update current_timestamp comment '修改时间',
         primary key (user_id),
-        unique index_user_id (user_id),
         index index_user_user (user_name,user_email,user_phone)
 ) comment '用户实体表';
+
+# 用户实体表分区
+alter table blog_user partition by range(unix_timestamp(create_time))(
+    partition time201910 values less than (UNIX_TIMESTAMP('2019-10-01 00:00:00')),
+    partition time201911 values less than (UNIX_TIMESTAMP('2019-11-01 00:00:00')),
+    partition time201912 values less than (UNIX_TIMESTAMP('2019-12-01 00:00:00')),
+    partition time202001 values less than (UNIX_TIMESTAMP('2020-01-01 00:00:00')),
+    partition time202002 values less than (UNIX_TIMESTAMP('2020-02-01 00:00:00')),
+    partition time202003 values less than (UNIX_TIMESTAMP('2020-03-01 00:00:00')),
+    partition time202004 values less than (UNIX_TIMESTAMP('2020-04-01 00:00:00'))
+    );
 
 
 create table blog_article(
@@ -28,8 +38,7 @@ create table blog_article(
 	article_content varchar(50) not null comment '文件位置',
     create_time timestamp not null default current_timestamp comment '创建时间',
     update_time timestamp not null default current_timestamp on update current_timestamp comment '修改时间',
-	primary key (article_id),
-	unique index_article_id (article_id)
+	primary key (article_id)
 ) comment '文章实体类';
 
 
@@ -42,7 +51,6 @@ create table blog_comment(
     create_time timestamp not null default current_timestamp comment '创建时间',
     update_time timestamp not null default current_timestamp on update current_timestamp comment '修改时间',
 	primary key (comment_id),
-	unique index_comment_id (comment_id),
 	index index_comment_fartherId(comment_farther)
 ) comment '评论实体类';
 
@@ -53,7 +61,6 @@ create table blog_message(
     message_comment varchar(500) not null comment '消息内容',
     create_time timestamp not null default current_timestamp comment '创建时间',
     primary key (message_id),
-    unique index_message_id (message_id),
     index index_message_user_get_id (message_user_get_id)
 ) comment '消息实体类';
 

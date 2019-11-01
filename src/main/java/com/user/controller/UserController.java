@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@CrossOrigin
+@CrossOrigin(allowedHeaders="*", allowCredentials="false", methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.OPTIONS})
 @RestController
 @RequestMapping(value = "/user/")
 public class UserController {
@@ -69,8 +69,8 @@ public class UserController {
 
     //输入忘记密码的问题答案   并给一个token 存入redis并有60秒时间限制
     @RequestMapping(value = "setAnswer",method = RequestMethod.POST)
-    public ServerResponse setAnswer(String userName, String userEmail, String answer){
-        return userService.setAnswer(userName,userEmail,answer);
+    public ServerResponse setAnswer(String userName, String userEmail, String userAnswer){
+        return userService.setAnswer(userName,userEmail,userAnswer);
     }
 
     //输入新密码
