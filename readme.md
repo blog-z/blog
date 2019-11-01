@@ -120,4 +120,4 @@
           "msg": "修改密码成功"
       }`
 
-![Image text](https://github.com/blog-z/blog/blob/master/images/2019-11-01%2021-10-33%20的屏幕截图.png)
+![Image text](https://github.com/blog-z/blog/blob/master/images/1.png)
