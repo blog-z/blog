@@ -80,6 +80,8 @@ public class ArticleController {
     //删除文章
     @RequestMapping(value = "deleteArticle",method = RequestMethod.POST)
     public ServerResponse deleteArticle(HttpServletRequest httpServletRequest,String userName,String articleId){
+        //也要删除redis中存的BeforeArticleKeyId+userId,articleId
+        com.dubbo.util.JedisUtil.delList(Const.RedisKey.BeforeUserKeyForArticleId+ JedisUtil.getValue(articleId),articleId);
         //也要把redis中存的articleId-articleUserId删除
         JedisUtil.delKey(Const.RedisKey.BeforeArticleKeyId+articleId);
         //也要把评论过此文章的评论删除

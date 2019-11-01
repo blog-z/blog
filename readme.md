@@ -120,4 +120,53 @@
           "msg": "修改密码成功"
       }`
 
-![Image text](https://github.com/blog-z/blog/blob/master/images/1.png)
+
+### **文章模块**
+
+1.当用户进入网站是，首先就像简书网站一样如下
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/jianshu.png)
+
+图中有如“寝室里的塑料情”，“2019前端面试汇总”等等...
+
+这些数据是从`http://localhost:8080/upload/homeArticle`中获取的，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/3.png)
+
+其中有一个参数`pageNum:1`这个参数的意思是当点击“阅读更多”的次数，默认是不点击为1，以后每点击一次加1
+
+
+2.当用户想看那片文章时,直接点击文章,此时前端向`http://localhost:8080/upload/getArticle`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/6.png)
+
+其中有一个参数`articleId:9`,意思是文章的ID
+
+3.当用户看一篇文章超过1分钟后，会触发增加此文章的热度属性，前端向`http://localhost:8080/upload/updateArticleHeat`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/4.png)
+
+其中有参数`articleId:9 articleHeat:2`,意思是文章的ID和文章的热度（此值可以在第二步得到）
+
+4.如果想发表文章（前提是先登录），文章写完后前端可以向`http://localhost:8080/upload/uploadArticle`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/2.png)
+
+其中有参数`articleTitle:文章标题    articleContent:文章内容   userName:用户名`
+
+5.发表后想修改，前端可以向`http://localhost:8080/upload/updateArticle`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/5.png)
+
+其中有参数`articleId:文章ID    articleTitle:文章标题    articleContent:文章内容   userName:用户名`
+
+6.如果想看自己发表了哪些文章，前端可以向`http://localhost:8080/upload/getOwnArticles`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/9.png)
+
+其中有参数`userName:用户名`
+
+7.如果想删除哪个文章，前端可以向`http://localhost:8080/upload/deleteArticle`发送请求，如下图
+
+![Image text](https://github.com/blog-z/blog/blob/master/images/7.png)
+
