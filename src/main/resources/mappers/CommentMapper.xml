@@ -72,4 +72,22 @@
       <if test="fartherId">and comment_farther=#{fartherId}</if>
     </where>
   </select>
+
+  <select id="selectOwnCommentsByCommentUserId" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="commentList"/>
+    from blog_comment
+    <where>
+    comment_user_id = #{commentUserId}
+    </where>
+  </select>
+
+  <select id="selectByCommentUserId" parameterType="string" resultType="com.user.entity.Comment">
+    select
+    <include refid="commentList"/>
+    from blog_comment
+    <where>
+    comment_user_id = #{commentUserId}
+    </where>
+  </select>
 </mapper>

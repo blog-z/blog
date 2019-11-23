@@ -113,4 +113,14 @@
     from blog_user
     where user_email=#{userEmail}
   </select>
+
+  <select id="checkUserNameOrEmail" resultType="int" parameterType="string">
+    select
+    count(*)
+    from blog_user
+    <where>
+      <if test="userName!=null">user_name=#{userName}</if>
+      <if test="userEmail!=null">or user_email=#{userEmail}</if>
+    </where>
+  </select>
 </mapper>

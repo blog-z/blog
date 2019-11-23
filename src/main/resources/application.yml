@@ -99,7 +99,7 @@ dubbo:
     address: zookeeper://127.0.0.1:21812
     protocol: zookeeper
   scan:
-    base-packages: com.user.controller
+    base-packages: com.user.controller,com.user.service.impl
 task:
   pool:
     corePoolSize: 20

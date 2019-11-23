@@ -1,16 +1,21 @@
 package com.user.service.impl;
 
+import com.dubbo.ElasticsearchService;
 import com.dubbo.commons.Const;
 import com.dubbo.commons.ServerResponse;
 import com.user.entity.Comment;
 import com.user.mapper.CommentMapper;
+import com.user.mapper.UserMapper;
 import com.user.service.CommentService;
 import com.user.utils.JedisUtil;
 import com.user.utils.JsonUtil;
+import com.user.vo.CommentAndArticleName;
 import com.user.vo.CommentVo;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +23,14 @@ import java.util.List;
 @Service("commentService")
 public class CommentServiceImpl implements CommentService{
 
+    @Reference(version = "1.0.0")
+    private ElasticsearchService elasticsearchService;
+
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     //发表评论
     public ServerResponse addComment(Comment comment){
@@ -81,6 +92,25 @@ public class CommentServiceImpl implements CommentService{
 
     }
 
+    public ServerResponse getOwnComments(String commentUserId){
+        List<Comment> commentList=commentMapper.selectOwnCommentsByCommentUserId(commentUserId);
+        List<CommentAndArticleName> commentAndArticleNameList=new ArrayList<>();
+        for (Comment comment : commentList){
+            CommentAndArticleName commentAndArticleName=new CommentAndArticleName(
+                    elasticsearchService.getArticleTitle(comment.getCommentArticleId()),
+                    comment.getCommentId(),
+                    commentUserId,
+                    comment.getCommentArticleId(),
+                    comment.getCommentFarther(),
+                    comment.getCommentContent(),
+                    new Date(comment.getCreateTime().getTime()),
+                    new Date(comment.getUpdateTime().getTime())
+            );
+            commentAndArticleNameList.add(commentAndArticleName);
+        }
+        return ServerResponse.createBySuccess("你发表的评论",commentAndArticleNameList);
+    }
+
     //删除评论，删除文章用
     public void deleteCommentsForDeleteArticle(String articleId){
         List<Comment> commentList=commentMapper.selectCommentByArticleIdAndFartherId(articleId,"0");
@@ -119,12 +149,14 @@ public class CommentServiceImpl implements CommentService{
             CommentVo commentVo=new CommentVo(
                     getCommentList(comment.getCommentId()),
                     comment.getCommentId(),
+                    userMapper.selectByPrimaryKey(comment.getCommentUserId()).getUserName(),
                     comment.getCommentUserId(),
                     comment.getCommentArticleId(),
                     comment.getCommentFarther(),
                     comment.getCommentContent(),
-                    comment.getCreateTime(),
-                    comment.getUpdateTime()
+                    false,
+                    new Date(comment.getCreateTime().getTime()),
+                    new Date(comment.getUpdateTime().getTime())
             );
             commentVoList.add(commentVo);
         }
@@ -144,12 +176,14 @@ public class CommentServiceImpl implements CommentService{
                 CommentVo commentVo=new CommentVo(
                         getCommentList(comment.getCommentId()),
                         comment.getCommentId(),
+                        userMapper.selectByPrimaryKey(comment.getCommentUserId()).getUserName(),
                         comment.getCommentUserId(),
                         comment.getCommentArticleId(),
                         comment.getCommentFarther(),
                         comment.getCommentContent(),
-                        comment.getCreateTime(),
-                        comment.getUpdateTime()
+                        false,
+                        new Date(comment.getCreateTime().getTime()),
+                        new Date(comment.getUpdateTime().getTime())
                 );
                 commentVoList.add(commentVo);
             }

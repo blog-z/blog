@@ -60,11 +60,11 @@ public class UserServiceImpl implements UserService {
 
     //注册检查userName
     public ServerResponse<String> checkRegisterUserNameOrEmail(String userNameOrEmail){
-        if (StringUtils.isNotEmpty(JedisUtil.getValue(userNameOrEmail))){
+        if (userMapper.checkUserNameOrEmail(userNameOrEmail,userNameOrEmail)>0){
             //如果redis中有此用户名，则不能在使用此用户名了
             return ServerResponse.createByErrorMessage("以存在");
         }
-        return ServerResponse.createBySuccessMessage("创建成功");
+        return ServerResponse.createBySuccessMessage("不存在");
     }
 
     //注册
@@ -72,17 +72,17 @@ public class UserServiceImpl implements UserService {
         String response="";
         int countUserName=userMapper.selectByUserNameOrEmailOrPhone(user.getUserName(),null,null);
         int countUserEmail=userMapper.selectByUserNameOrEmailOrPhone(null,user.getUserEmail(),null);
-        int countPhone=userMapper.selectByUserNameOrEmailOrPhone(null,null,user.getUserPhone());
-        if (countUserName+countUserEmail+countPhone!=0){
+//        int countPhone=userMapper.selectByUserNameOrEmailOrPhone(null,null,user.getUserPhone());
+        if (countUserName+countUserEmail!=0){
             if (countUserName!=0){
                 response+="用户名";
             }
             if (countUserEmail!=0) {
                 response+="邮箱";
             }
-            if (countPhone != 0) {
-                response+="电话号码";
-            }
+//            if (countPhone != 0) {
+//                response+="电话号码";
+//            }
             return ServerResponse.createByErrorMessage(response+"已存在");
         }
 

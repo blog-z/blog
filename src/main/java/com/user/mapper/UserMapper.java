@@ -29,4 +29,6 @@ public interface UserMapper {
 
     //通过userEmail查找用户
     User selectByUserEmail(String userEmail);
+
+    int checkUserNameOrEmail(@Param(value = "userName") String userName,@Param(value = "userEmail") String userEmail);
 }

@@ -15,4 +15,6 @@ public interface CommentService {
     ServerResponse selectComment(String articleId);
 
     void deleteCommentsForDeleteArticle(String articleId);
+
+    ServerResponse getOwnComments(String commentUserId);
 }

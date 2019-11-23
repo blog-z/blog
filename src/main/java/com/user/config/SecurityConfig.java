@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/upload/homeArticle",
             "/upload/getArticle",
             "/upload/searchArticle",
+            "/comment/selectComment",
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",

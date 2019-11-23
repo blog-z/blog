@@ -18,6 +18,6 @@ public class MyAuthenticationEntryPointHandler implements AuthenticationEntryPoi
         StringBuffer msg = new StringBuffer("请求访问: ");
         msg.append(request.getRequestURI()).append(" 接口，因为认证失败，无法访问系统资源.");
         System.out.println(msg.toString());
-        ResponseUtil.out(response, ServerResponse.createByErrorMessage(msg.toString()));
+        ResponseUtil.out(response, ServerResponse.createByErrorMessage("请登录"));
     }
 }
